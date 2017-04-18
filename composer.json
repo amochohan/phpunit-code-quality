@@ -1,0 +1,23 @@
+{
+    "name": "drawmyattention/code-quality",
+    "description": "Automatically PHP check code quality once PHPUnit tests pass",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Amo Chohan",
+            "email": "amo.chohan@gmail.com"
+        }
+    ],
+    "require": {
+        "phpunit/phpunit": "~5.7",
+        "symfony/console": "^3.2",
+        "symfony/process": "^3.2",
+        "phpmd/phpmd": "^2.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "DrawMyAttention\\CodeQuality\\": "src"
+        }
+    }
+}
