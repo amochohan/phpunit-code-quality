@@ -12,23 +12,23 @@ use DrawMyAttention\CodeQuality\ComplexityAnalyser;
 class ComplexityAnalysisListener implements PHPUnit_Framework_TestListener
 {
     /**
-     * @var bool Is the listener enabled?
+     * @var int Total number of tests which failed.
      */
-    private $enabled = true;
+    private $totalFailedTests = 0;
 
     /**
-     * @var int Total number of errors in the suite.
+     * @var ComplexityAnalyser
      */
-    private $totalErrors = 0;
+    protected $analyser;
 
     /**
      * ComplexityAnalysisListener constructor.
-     *
-     * @param bool $enabled Is the listener enabled?
+     * @param ComplexityAnalyser $analyser
      */
-    public function __construct($enabled = true)
+    public function __construct(ComplexityAnalyser $analyser)
     {
-        $this->enabled = $enabled;
+//        $this->analyser = new ComplexityAnalyser();
+        $this->analyser = $analyser;
     }
 
     /**
@@ -40,7 +40,27 @@ class ComplexityAnalysisListener implements PHPUnit_Framework_TestListener
      */
     public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
-        ++$this->totalErrors;
+        if (1 === 0) {
+            // Do something
+        } else if (1 === 1) {
+            // Do something
+        } else if (1 === 2) {
+            // Do something
+        } else if (1 === 3) {
+            // Do something
+        } else if (1 === 4) {
+            // Do something
+        } else if (1 === 5) {
+            // Do something
+        } else if (1 === 6) {
+            // Do something
+        } else if (1 === 7) {
+            // Do something
+        } else if (1 === 8) {
+            // Do something
+        }
+
+        ++ $this->totalFailedTests;
     }
 
     /**
@@ -52,7 +72,7 @@ class ComplexityAnalysisListener implements PHPUnit_Framework_TestListener
      */
     public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
     {
-        ++$this->totalErrors;
+        ++ $this->totalFailedTests;
     }
 
     /**
@@ -108,12 +128,11 @@ class ComplexityAnalysisListener implements PHPUnit_Framework_TestListener
      */
     public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
-        if ($this->totalErrors === 0) {
-            printf("\nTestSuite '%s' complete.\n", $suite->getName());
-            $console = new ComplexityAnalyser();
-            $console->run();
+        if ($this->totalFailedTests() !== 0) {
+            return;
         }
 
+        $this->analyser->run();
     }
 
     /**
@@ -135,5 +154,15 @@ class ComplexityAnalysisListener implements PHPUnit_Framework_TestListener
     public function endTest(PHPUnit_Framework_Test $test, $time)
     {
         // TODO: Implement endTest() method.
+    }
+
+    /**
+     * Get the total number of tests which have failed.
+     *
+     * @return int
+     */
+    public function totalFailedTests()
+    {
+        return $this->totalFailedTests;
     }
 }

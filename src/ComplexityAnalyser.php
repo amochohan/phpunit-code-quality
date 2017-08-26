@@ -81,12 +81,16 @@ class ComplexityAnalyser extends Application
     private function loadConfiguration($configurationFile = null, $phpMdRules = null)
     {
         if (is_null($configurationFile)) {
-            $configurationFile = 'config.php';
+            $configurationFile = 'complexity-analyser-config.php';
+            $userDefinedConfigFile = getcwd() . $configurationFile;
+            if (file_exists($userDefinedConfigFile)) {
+               $configurationFile = $userDefinedConfigFile;
+            }
         }
 
         $config = require_once($configurationFile);
 
-        $this->projectRootDirectory = $config['project_root'];
+        $this->projectRootDirectory = getcwd();
 
         $this->directoriesToScan = $config['scan_directories'];
 
@@ -94,10 +98,16 @@ class ComplexityAnalyser extends Application
 
         $this->excludedFiles = $config['excluded_files'];
 
-        $this->phpMdExecutablePath = $config['php_mess_detector_path'];
+        $this->phpMdExecutablePath = getcwd() . '/vendor/bin/phpmd';
 
         if (is_null($phpMdRules)) {
-            $phpMdRules = __DIR__ . '/phpmd-rules.xml';
+            $rulesFile = 'phpmd-rules.xml';
+            $userDefinedRulesFile = getcwd() . DIRECTORY_SEPARATOR . $rulesFile;
+            if (file_exists($rulesFile)) {
+                $phpMdRules = $userDefinedRulesFile;
+            } else {
+                $phpMdRules = __DIR__ . '/phpmd-rules.xml';
+            }
         }
 
         $this->phpMdRulesFile = $phpMdRules;
@@ -117,6 +127,7 @@ class ComplexityAnalyser extends Application
 
         $this->output = $output;
 
+        $this->output->writeln('');
         $this->output->writeln('Analysing code complexity.');
 
         $files = $this->filesChangedInProject();
@@ -144,16 +155,6 @@ class ComplexityAnalyser extends Application
         $this->output->writeln('<fg='.$foreground.';options='.$options.';bg='.$background.'>'.
             $message
             .'</fg='.$foreground.';options='.$options.';bg='.$background.'>');
-    }
-
-    /**
-     * Write an info message to the screen.
-     *
-     * @param string $message
-     */
-    private function info($message)
-    {
-        $this->write('<info>'.$message.'</info>');
     }
 
     /**
@@ -271,15 +272,17 @@ class ComplexityAnalyser extends Application
 
         foreach ($files as $file) {
             $processBuilder = new ProcessBuilder([
-                $this->phpMdExecutablePath . 'phpmd',
+                $this->phpMdExecutablePath,
                 $file,
                 'text',
                 $this->phpMdRulesFile
             ]);
+
             $processBuilder->setWorkingDirectory($this->projectRootDirectory);
             $process = $processBuilder->getProcess();
             $process->run();
             if (!$process->isSuccessful()) {
+//                dd($process->getExitCodeText(), $process->getExitCode(), $process->getErrorOutput(), $process->getCommandLine(), $process->getOutput());
                 $output = preg_replace('!\s+!', ' ', $process->getOutput());
                 $this->write(trim($output));
                 $this->write(trim($file));
