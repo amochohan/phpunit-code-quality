@@ -282,7 +282,6 @@ class ComplexityAnalyser extends Application
             $process = $processBuilder->getProcess();
             $process->run();
             if (!$process->isSuccessful()) {
-//                dd($process->getExitCodeText(), $process->getExitCode(), $process->getErrorOutput(), $process->getCommandLine(), $process->getOutput());
                 $output = preg_replace('!\s+!', ' ', $process->getOutput());
                 $this->write(trim($output));
                 $this->write(trim($file));
