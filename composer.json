@@ -1,5 +1,5 @@
 {
-    "name": "drawmyattention/code-quality",
+    "name": "drawmyattention/phpunit-code-quality",
     "description": "Automatically PHP check code quality once PHPUnit tests pass",
     "type": "library",
     "license": "MIT",
