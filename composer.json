@@ -13,7 +13,8 @@
         "phpunit/phpunit": "~5.7",
         "symfony/console": "^3.2",
         "symfony/process": "^3.2",
-        "phpmd/phpmd": "^2.6"
+        "phpmd/phpmd": "^2.6",
+        "mockery/mockery": "^0.9.9"
     },
     "autoload": {
         "psr-4": {
