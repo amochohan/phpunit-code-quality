@@ -29,6 +29,7 @@
     <listeners>
         <listener class="DrawMyAttention\CodeQuality\Listeners\ComplexityAnalysisListener">
             <arguments>
+                <object class="DrawMyAttention\CodeQuality\ComplexityAnalyser"/>
                 <bool>true</bool>
             </arguments>
         </listener>
